@@ -7,7 +7,7 @@
 - Python / Flask
 - SQLite
 - Docker
-- Ansible (позже)
+- Ansible
 - CI/CD GHA (позже)
 
 # Эндпоинты
