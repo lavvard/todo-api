@@ -1,0 +1,39 @@
+- hosts: localhost
+
+  vars:
+    package_name: "docker.io"
+    service_name: "docker"
+    container_name: "to-do-api"
+
+  tasks:
+    #- name: install docker
+    #  apt: 
+    #    name: "{{ package_name }}"
+    #    state: present
+    
+    # - name: start and enable docker
+    #  service:
+    #    name: "{{ service_name }}"
+    #    state: started
+    #    enabled: true
+
+    - name: build container
+      command: docker build -t "{{ container_name }}" /home/vladik/pet-project
+      register: build_result
+    
+    - name: stop container
+      command: docker stop "{{ container_name }}"
+      register: stop_result
+      ignore_errors: true
+    
+    - name: delete old container
+      command: docker rm -f "{{ container_name }}"
+      register: delete_result
+    
+    - name: start container
+      command: docker run -d --name to-do-api -p 5000:5000 -v todo-api-data:/data "{{ container_name }}"
+      register: run_result
+    
+    - name: show result
+      debug:
+        var: run_result.stdout
