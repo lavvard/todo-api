@@ -8,7 +8,7 @@
 - SQLite
 - Docker
 - Ansible
-- CI/CD GHA (позже)
+- CI/CD GHA
 
 # Эндпоинты
 
