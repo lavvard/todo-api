@@ -1,0 +1,22 @@
+name: deploy
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  running:
+    runs-on: self-hosted
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: run-playbook
+        run: |
+          ansible-playbook playbook.yml
+      
+      - name: check-deployment
+        if: failure()
+        run: |
+          echo "Deploy is failed. Please check Docker-logs"
+          docker ps -a 
+          docker logs $(docker ps -aq --latest) || true
