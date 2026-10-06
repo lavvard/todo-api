@@ -1,0 +1,44 @@
+services:
+  opensearch:
+    image: opensearchproject/opensearch:3.9.0
+    container_name: opensearch
+    environment:
+      - cluster.name=opensearch-cluster
+      - node.name=opensearch-node1
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "DISABLE_SECURITY_PLUGIN=true"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    ports:
+      - 9200:9200
+      - 9600:9600
+    networks:
+      - opensearch-net
+    volumes:
+      - data:/usr/share/opensearch/data
+
+
+  opensearch-dashboards:
+    image: opensearchproject/opensearch-dashboards:3.9.0
+    container_name: opensearch-dashboards
+    ports:
+      - 5601:5601
+    environment:
+      - 'OPENSEARCH_HOSTS=["http://opensearch:9200"]'
+      - 'DISABLE_SECURITY_DASHBOARDS_PLUGIN=true' 
+    networks:
+      - opensearch-net
+
+volumes:
+  data:
+
+networks:
+  opensearch-net:
+    driver: bridge
