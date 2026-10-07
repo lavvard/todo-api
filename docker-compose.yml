@@ -35,10 +35,16 @@ services:
       - 'DISABLE_SECURITY_DASHBOARDS_PLUGIN=true' 
     networks:
       - opensearch-net
+  vector:
+    image: timberio/vector:0.59.0-alpine
+    networks:
+      - opensearch-net
+    volumes:
+      - ./vector.yml:/etc/vector/vector.yaml:ro
+      - /var/run/docker.sock:/var/run/docker.sock 
 
 volumes:
   data:
-
 networks:
   opensearch-net:
     driver: bridge

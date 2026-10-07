@@ -1,0 +1,19 @@
+sources:
+  todo_logs:
+    type: docker_logs
+    include_containers: [to-do-api]
+
+sinks:
+  print:
+    type: console
+    inputs: [todo_logs]
+    encoding:
+      codec: json
+
+  to_opensearch:
+    type: elasticsearch
+    inputs: [todo_logs]
+    endpoints: ["http://opensearch:9200"]
+    suppress_type_name: true
+    bulk:
+      index: "to-do-logs"
