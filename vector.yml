@@ -6,14 +6,21 @@ sources:
 sinks:
   print:
     type: console
-    inputs: [todo_logs]
+    inputs: [clear_color_symbols]
     encoding:
       codec: json
 
   to_opensearch:
     type: elasticsearch
-    inputs: [todo_logs]
+    inputs: [clear_color_symbols]
     endpoints: ["http://opensearch:9200"]
     suppress_type_name: true
     bulk:
       index: "to-do-logs"
+
+transforms:
+  clear_color_symbols:
+    type: remap
+    inputs: ["todo_logs"]
+    source: |
+      .message = strip_ansi_escape_codes!(.message)
