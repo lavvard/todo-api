@@ -7,8 +7,14 @@
 - Python / Flask
 - SQLite
 - Docker
+- Docker Compose
 - Ansible
 - CI/CD GHA
+- OpenSearch
+- OpenSearch Dashboards
+- Vector
+- Prometheus
+- Grafana
 
 # Эндпоинты
 
@@ -27,3 +33,19 @@ docker run -d -p 5000:5000 -v todo-api-data:/data todo-api
 ```
 
 Данные сохраняются в Docker volume `todo-api-data`, поэтому переживают пересоздание контейнера.
+
+# Логи и мониторинг
+
+Стенд для логов и метрик запускается отдельно через Docker Compose:
+
+    docker compose up -d
+
+Что поднимается и где открывать:
+
+- OpenSearch Dashboards: http://localhost:5601 (поиск и просмотр логов через Discover)
+- OpenSearch API: http://localhost:9200
+- Prometheus: http://localhost:9090 (сбор метрик)
+- node-exporter: http://localhost:9100/metrics (метрики хоста)
+- Grafana: http://localhost:3000 (дашборды и источник данных Prometheus по адресу http://prometheus:9090)
+
+Vector читает логи контейнера `to-do-api` через Docker-сокет, очищает их от служебных символов и отправляет в OpenSearch (индекс `to-do-logs`). Конфигурация сбора метрик находится в `prometheus.yml`.
