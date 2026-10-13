@@ -1,0 +1,15 @@
+actions-runner/
+*.pyc
+*.pyo
+*.pyd
+
+__pycache__/
+venv/
+.env
+
+.idea/
+.vscode/
+
+*.log
+
+*.db

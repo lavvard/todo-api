@@ -8,3 +8,6 @@ __pycache__/
 *.db
 .vscode/
 .idea/
+kubectl
+minikube-linux-arm64
+actions-runner/
