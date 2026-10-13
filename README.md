@@ -27,10 +27,16 @@
 
 # Запуск
 
-```bash
-docker build -t todo-api .
-docker run -d -p 5000:5000 -v todo-api-data:/data todo-api
-```
+Вручную через Docker:
+
+    docker build -t todo-api .
+    docker run -d -p 5000:5000 -v todo-api-data:/data todo-api
+
+Через Ansible (собирает образ, останавливает старый контейнер и запускает новый):
+
+    ansible-playbook playbook.yml
+
+В репозитории настроен GitHub Actions: при пуше в `main` деплой запускается автоматически на self-hosted runner.
 
 Данные сохраняются в Docker volume `todo-api-data`, поэтому переживают пересоздание контейнера.
 
@@ -42,7 +48,7 @@ docker run -d -p 5000:5000 -v todo-api-data:/data todo-api
 
 Что поднимается и где открывать:
 
-- OpenSearch Dashboards: http://localhost:5601 (поиск и просмотр логов через Discover)
+- OpenSearch Dashboards: http://localhost:5601 (поиск и просмотр логов в Discover)
 - OpenSearch API: http://localhost:9200
 - Prometheus: http://localhost:9090 (сбор метрик)
 - node-exporter: http://localhost:9100/metrics (метрики хоста)
